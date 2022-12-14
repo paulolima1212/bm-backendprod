@@ -26,6 +26,7 @@ export class OrdersService {
         id,
       },
       select: {
+        id: true,
         client: true,
         contact: true,
         statusOrder: true,

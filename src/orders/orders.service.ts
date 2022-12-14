@@ -13,12 +13,27 @@ export class OrdersService {
   }
 
   findAll() {
-    return this.prisma.orders.findMany();
+    return this.prisma.orders.findMany({
+      select: {
+        orders_products: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    console.log('pass');
-    return `This action returns a #${id} order`;
+    return this.prisma.orders.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        client: true,
+        contact: true,
+        statusOrder: true,
+        createdAt: true,
+        dateDelivery: true,
+        orders_products: true,
+      },
+    });
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {

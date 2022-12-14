@@ -32,7 +32,6 @@ export class OrdersController {
 
   @Get('/order/:id')
   findOne(@Param('id') id: string) {
-    console.log('pass');
     return this.ordersService.findOne(+id);
   }
 

@@ -13,11 +13,7 @@ export class OrdersService {
   }
 
   findAll() {
-    return this.prisma.orders.findMany({
-      select: {
-        orders_products: true,
-      },
-    });
+    return this.prisma.orders.findMany();
   }
 
   findOne(id: number) {

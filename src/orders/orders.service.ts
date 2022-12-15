@@ -33,8 +33,8 @@ export class OrdersService {
     });
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  update(id: number, data: UpdateOrderDto) {
+    return 'This action updates a order';
   }
 
   remove(id: number) {

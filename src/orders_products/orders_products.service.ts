@@ -47,11 +47,56 @@ export class OrdersProductsService {
     return `This action returns a #${id} ordersProduct`;
   }
 
-  update(id: number, data: UpdateOrdersProductDto) {
-    return `This action updates a #${id} ordersProduct`;
+  async update(id: number, data: UpdateOrdersProductDto) {
+    const { client, contact, dateDelivery, products, statusOrder } = data;
+
+    try {
+      await this.prisma.orders_products.deleteMany({
+        where: {
+          ordersId: id,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+
+    await this.prisma.orders.update({
+      where: {
+        id,
+      },
+      data: {
+        client: client,
+        contact: contact,
+        dateDelivery: dateDelivery,
+        statusOrder: statusOrder,
+      },
+    });
+
+    for await (const product of products) {
+      const price = product.price.split('€')[0];
+      await this.prisma.orders_products.create({
+        data: {
+          description: product.description,
+          price,
+          quantity: product.quantity,
+          weight: product.weight,
+          ordersId: id,
+        },
+      });
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ordersProduct`;
+  async remove(id: number) {
+    await this.prisma.orders.delete({
+      where: {
+        id,
+      },
+    });
+
+    await this.prisma.orders_products.deleteMany({
+      where: {
+        ordersId: id,
+      },
+    });
   }
 }

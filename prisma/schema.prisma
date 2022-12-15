@@ -9,14 +9,14 @@ datasource db {
 }
 
 model orders {
-  id              Int               @id @default(autoincrement())
-  client          String
-  contact         String
-  dateDelivery    String
-  totalOrder      Decimal
-  statusOrder     String
-  createdAt       DateTime          @default(now())
-  orders_products orders_products[]
+  id           Int               @id @default(autoincrement())
+  client       String
+  contact      String
+  dateDelivery String
+  totalOrder   Decimal
+  statusOrder  String
+  createdAt    DateTime          @default(now())
+  products     orders_products[]
 }
 
 model orders_products {

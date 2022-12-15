@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma';
+import { sendMessages } from 'src/Messages/Twillio';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
@@ -13,6 +14,10 @@ export class OrdersService {
   }
 
   findAll() {
+    sendMessages({
+      message: 'messagem teste',
+      dest: '966434548',
+    });
     return this.prisma.orders.findMany();
   }
 
@@ -29,9 +34,17 @@ export class OrdersService {
         createdAt: true,
         dateDelivery: true,
         totalOrder: true,
-        orders_products: true,
+        products: true,
       },
     });
+  }
+
+  sendMessage() {
+    sendMessages({
+      message: 'messagem teste',
+      dest: '966434548',
+    });
+    return 'Ok';
   }
 
   update(id: number, data: UpdateOrderDto) {

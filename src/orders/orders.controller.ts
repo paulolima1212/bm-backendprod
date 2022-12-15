@@ -35,6 +35,11 @@ export class OrdersController {
     return this.ordersService.findOne(+id);
   }
 
+  @Get('/new/sendmessage')
+  sendMessage() {
+    return this.ordersService.sendMessage();
+  }
+
   @Patch('/order/:id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.update(+id, updateOrderDto);

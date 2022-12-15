@@ -30,7 +30,8 @@
     "res": "^0.4.0",
     "resource": "^0.8.1",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "twilio": "^3.84.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

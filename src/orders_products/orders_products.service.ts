@@ -9,17 +9,15 @@ export class OrdersProductsService {
   async create(data: CreateOrdersProductDto) {
     const { client, contact, dateDelivery, statusOrder } = data;
 
-    async function totalOrderToPay() {
+    function totalOrderToPay() {
       const totalOrderCalc = data.products.reduce((acc, product) => {
-        acc = Number(product.price) + acc;
-  
+        acc = Number(product.price.split('€')[0]) + acc;
+
         return acc;
       }, 0);
-      
-      return await totalOrderCalc
+
+      return totalOrderCalc;
     }
-
-
 
     const order = await this.prisma.orders.findUnique({
       where: {
@@ -33,7 +31,7 @@ export class OrdersProductsService {
           client,
           contact,
           dateDelivery,
-          totalOrder: 100,
+          totalOrder: totalOrderToPay(),
           statusOrder,
         },
       });
@@ -74,11 +72,15 @@ export class OrdersProductsService {
       throw new Error(error);
     }
 
-    const totalOrderCalc = products.reduce((acc, product) => {
-      acc = Number(product.price) + acc;
+    function totalOrderToPay() {
+      const totalOrderCalc = data.products.reduce((acc, product) => {
+        acc = Number(product.price.split('€')[0]) + acc;
 
-      return acc;
-    }, 0);
+        return acc;
+      }, 0);
+
+      return totalOrderCalc;
+    }
 
     await this.prisma.orders.update({
       where: {
@@ -88,7 +90,7 @@ export class OrdersProductsService {
         client: client,
         contact: contact,
         dateDelivery: dateDelivery,
-        totalOrder: totalOrderCalc,
+        totalOrder: totalOrderToPay(),
         statusOrder: statusOrder,
       },
     });

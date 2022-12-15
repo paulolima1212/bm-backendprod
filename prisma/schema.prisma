@@ -21,14 +21,22 @@ model orders {
 
 model orders_products {
   id          Int      @id @default(autoincrement())
-  order       orders   @relation(fields: [ordersId], references: [id])
   description String
   price       Decimal
   weight      String
   quantity    Decimal
   createdAt   DateTime @default(now())
-
-  ordersId Int
+  ordersId    Int
+  order       orders   @relation(fields: [ordersId], references: [id])
 
   @@index([ordersId])
+}
+
+model products {
+  id      Int     @id @default(autoincrement())
+  type    String? @db.VarChar(50)
+  variant String? @db.VarChar(50)
+  weight  String? @db.VarChar(50)
+  price   String? @db.VarChar(50)
+  unit    String? @db.VarChar(50)
 }

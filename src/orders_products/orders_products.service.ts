@@ -109,6 +109,18 @@ export class OrdersProductsService {
     }
   }
 
+  async findListProducts() {
+    return await this.prisma.$queryRawUnsafe(`
+      SELECT 
+        op.description, SUM(op.quantity) AS quantity, LEFT(o.dateDelivery,10)
+      FROM 
+        orders_products op 
+      INNER JOIN orders o 
+        ON op.ordersId = o.id 
+      GROUP BY op.description, LEFT(o.dateDelivery,10) 
+    `);
+  }
+
   async remove(id: number) {
     await this.prisma.orders.delete({
       where: {

@@ -13,6 +13,7 @@ model orders {
   client          String
   contact         String
   dateDelivery    String
+  totalOrder      Decimal
   statusOrder     String
   createdAt       DateTime          @default(now())
   orders_products orders_products[]

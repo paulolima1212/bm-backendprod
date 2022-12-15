@@ -28,6 +28,7 @@ export class OrdersService {
         statusOrder: true,
         createdAt: true,
         dateDelivery: true,
+        totalOrder: true,
         orders_products: true,
       },
     });

@@ -11,6 +11,7 @@ export class CreateOrdersProductDto {
   client: string;
   contact: string;
   dateDelivery: string;
+  totalOrder: number;
   statusOrder: string;
   products: Product[];
 }

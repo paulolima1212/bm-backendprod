@@ -8,25 +8,39 @@ export class OrdersProductsService {
   constructor(private prisma: PrismaService) {}
   async create(data: CreateOrdersProductDto) {
     const { client, contact, dateDelivery, statusOrder } = data;
-    for (const product of data.products) {
-      const order = await this.prisma.orders.findUnique({
-        where: {
-          id: data.id,
+
+    async function totalOrderToPay() {
+      const totalOrderCalc = data.products.reduce((acc, product) => {
+        acc = Number(product.price) + acc;
+  
+        return acc;
+      }, 0);
+      
+      return await totalOrderCalc
+    }
+
+
+
+    const order = await this.prisma.orders.findUnique({
+      where: {
+        id: data.id,
+      },
+    });
+
+    if (!order) {
+      const newOrder = await this.prisma.orders.create({
+        data: {
+          client,
+          contact,
+          dateDelivery,
+          totalOrder: 100,
+          statusOrder,
         },
       });
+    }
 
+    for (const product of data.products) {
       const price = Number(product.price.split('€')[0]);
-
-      if (!order) {
-        const newOrder = await this.prisma.orders.create({
-          data: {
-            client,
-            contact,
-            dateDelivery,
-            statusOrder,
-          },
-        });
-      }
       const newOrderProduct = await this.prisma.orders_products.create({
         data: {
           description: product.description,
@@ -60,6 +74,12 @@ export class OrdersProductsService {
       throw new Error(error);
     }
 
+    const totalOrderCalc = products.reduce((acc, product) => {
+      acc = Number(product.price) + acc;
+
+      return acc;
+    }, 0);
+
     await this.prisma.orders.update({
       where: {
         id,
@@ -68,6 +88,7 @@ export class OrdersProductsService {
         client: client,
         contact: contact,
         dateDelivery: dateDelivery,
+        totalOrder: totalOrderCalc,
         statusOrder: statusOrder,
       },
     });

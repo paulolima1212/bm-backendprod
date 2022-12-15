@@ -11,13 +11,15 @@ export class OrdersProductsService {
 
     function totalOrderToPay() {
       const totalOrderCalc = data.products.reduce((acc, product) => {
-        acc = Number(product.price.split('€')[0]) + acc;
+        acc = Number(product.price.split(' ')[0]) + acc;
 
         return acc;
       }, 0);
 
       return totalOrderCalc;
     }
+
+    console.log(totalOrderToPay());
 
     const order = await this.prisma.orders.findUnique({
       where: {
@@ -31,18 +33,17 @@ export class OrdersProductsService {
           client,
           contact,
           dateDelivery,
-          totalOrder: totalOrderToPay(),
+          totalOrder: 0,
           statusOrder,
         },
       });
     }
 
-    for (const product of data.products) {
-      const price = Number(product.price.split('€')[0]);
+    for await (const product of data.products) {
       const newOrderProduct = await this.prisma.orders_products.create({
         data: {
           description: product.description,
-          price,
+          price: Number(String(product.price).replace(',', '.')),
           quantity: product.quantity,
           weight: product.weight,
           ordersId: data.id,
@@ -90,17 +91,16 @@ export class OrdersProductsService {
         client: client,
         contact: contact,
         dateDelivery: dateDelivery,
-        totalOrder: totalOrderToPay(),
+        totalOrder: 0,
         statusOrder: statusOrder,
       },
     });
 
     for await (const product of products) {
-      const price = product.price.split('€')[0];
       await this.prisma.orders_products.create({
         data: {
           description: product.description,
-          price,
+          price: Number(String(product.price).replace(',', '.')),
           quantity: product.quantity,
           weight: product.weight,
           ordersId: id,

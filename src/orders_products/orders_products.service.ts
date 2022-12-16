@@ -8,19 +8,7 @@ import { UpdateOrdersProductDto } from './dto/update-orders_product.dto';
 export class OrdersProductsService {
   constructor(private prisma: PrismaService) {}
   async create(data: CreateOrdersProductDto) {
-    const { client, contact, dateDelivery, statusOrder } = data;
-
-    function totalOrderToPay() {
-      const totalOrderCalc = data.products.reduce((acc, product) => {
-        acc = Number(product.price.split(' ')[0]) + acc;
-
-        return acc;
-      }, 0);
-
-      return totalOrderCalc;
-    }
-
-    console.log(totalOrderToPay());
+    const { client, contact, dateDelivery, statusOrder, totalOrder } = data;
 
     const order = await this.prisma.orders.findUnique({
       where: {
@@ -34,7 +22,7 @@ export class OrdersProductsService {
           client,
           contact,
           dateDelivery,
-          totalOrder: 0,
+          totalOrder,
           statusOrder,
         },
       });
@@ -62,7 +50,8 @@ export class OrdersProductsService {
   }
 
   async update(id: number, data: UpdateOrdersProductDto) {
-    const { client, contact, dateDelivery, products, statusOrder } = data;
+    const { client, contact, dateDelivery, products, statusOrder, totalOrder } =
+      data;
 
     try {
       await this.prisma.orders_products.deleteMany({
@@ -74,16 +63,6 @@ export class OrdersProductsService {
       throw new Error(error);
     }
 
-    function totalOrderToPay() {
-      const totalOrderCalc = data.products.reduce((acc, product) => {
-        acc = Number(product.price.split('€')[0]) + acc;
-
-        return acc;
-      }, 0);
-
-      return totalOrderCalc;
-    }
-
     await this.prisma.orders.update({
       where: {
         id,
@@ -92,7 +71,7 @@ export class OrdersProductsService {
         client: client,
         contact: contact,
         dateDelivery: dateDelivery,
-        totalOrder: 0,
+        totalOrder: totalOrder,
         statusOrder: statusOrder,
       },
     });

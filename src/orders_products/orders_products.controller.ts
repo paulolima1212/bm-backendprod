@@ -30,6 +30,11 @@ export class OrdersProductsController {
     return this.ordersProductsService.findListProducts();
   }
 
+  @Get('/list/orderbyproduct/:product')
+  findOrderByProduct(@Param('product') product: string) {
+    return this.ordersProductsService.findOrdersByProducts(product);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ordersProductsService.findOne(+id);

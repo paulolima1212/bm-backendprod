@@ -110,6 +110,19 @@ export class OrdersProductsService {
     }
   }
 
+  async findOrdersByProducts(product: string) {
+    return await this.prisma.$queryRawUnsafe(`
+      SELECT 
+        o.id , o.client , o.dateDelivery , op.quantity , op.weight 
+      FROM 
+        orders o 
+      INNER JOIN	orders_products op 
+        ON o.id = op.ordersId 
+      WHERE 
+        op.description LIKE '%${product}%'
+    `);
+  }
+
   async findListProducts() {
     return await this.prisma.$queryRawUnsafe(`
       SELECT 

@@ -10,6 +10,7 @@ import {
 import { OrdersProductsService } from './orders_products.service';
 import { CreateOrdersProductDto } from './dto/create-orders_product.dto';
 import { UpdateOrdersProductDto } from './dto/update-orders_product.dto';
+import { Query } from '@nestjs/common/decorators';
 
 @Controller('orders-products')
 export class OrdersProductsController {
@@ -30,9 +31,21 @@ export class OrdersProductsController {
     return this.ordersProductsService.findListProducts();
   }
 
-  @Get('/list/orderbyproduct/:product')
-  findOrderByProduct(@Param('product') product: string) {
-    return this.ordersProductsService.findOrdersByProducts(product);
+  @Get('/list/orderbyproduct')
+  findOrderByProduct(
+    @Query()
+    query: {
+      description: string;
+      weight: string;
+      dateDelivery: string;
+    },
+  ) {
+    const { description, weight, dateDelivery } = query;
+    return this.ordersProductsService.findOrdersByProducts({
+      description,
+      weight,
+      dateDelivery,
+    });
   }
 
   @Get(':id')

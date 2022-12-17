@@ -14,11 +14,19 @@ export class OrdersService {
   }
 
   findAll() {
-    sendMessages({
-      message: 'messagem teste',
-      dest: '966434548',
+    return this.prisma.orders.findMany({
+      select: {
+        id: true,
+        client: true,
+        contact: true,
+        dateDelivery: true,
+        totalOrder: true,
+        statusOrder: true,
+      },
+      orderBy: {
+        dateDelivery: 'asc',
+      },
     });
-    return this.prisma.orders.findMany();
   }
 
   findOne(id: number) {
@@ -41,8 +49,8 @@ export class OrdersService {
 
   sendMessage() {
     sendMessages({
-      message: 'messagem teste',
-      dest: '966434548',
+      message: 'messagem teste 2',
+      dest: '968727791',
     });
     return 'Ok';
   }

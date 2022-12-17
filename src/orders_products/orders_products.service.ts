@@ -89,7 +89,15 @@ export class OrdersProductsService {
     }
   }
 
-  async findOrdersByProducts(product: string) {
+  async findOrdersByProducts({
+    description,
+    weight,
+    dateDelivery,
+  }: {
+    description: string;
+    weight: string;
+    dateDelivery: string;
+  }) {
     return await this.prisma.$queryRawUnsafe(`
       SELECT 
         o.id , o.client , o.dateDelivery , op.quantity , op.weight 
@@ -98,19 +106,24 @@ export class OrdersProductsService {
       INNER JOIN	orders_products op 
         ON o.id = op.ordersId 
       WHERE 
-        op.description LIKE '%${product}%'
+        op.description LIKE '%${description}%' AND op.weight LIKE '%${weight}%' AND o.dateDelivery LIKE '%${dateDelivery}%'
+      ORDER BY
+        o.dateDelivery
     `);
   }
 
   async findListProducts() {
     return await this.prisma.$queryRawUnsafe(`
       SELECT 
-        op.id, op.description, op.weight, SUM(op.quantity), LEFT(o.dateDelivery,10)
+        op.description, op.weight, SUM(op.quantity), LEFT(o.dateDelivery,10)
       FROM 
         orders_products op 
       INNER JOIN orders o 
         ON op.ordersId = o.id 
-      GROUP BY op.id, op.description, op.weight,  LEFT(o.dateDelivery,10)
+      GROUP BY 
+        op.description, op.weight,  LEFT(o.dateDelivery,10)
+      ORDER BY 
+        LEFT(o.dateDelivery, 10), op.description 
     `);
   }
 

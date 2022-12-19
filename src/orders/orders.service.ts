@@ -3,6 +3,7 @@ import { PrismaService } from 'src/database/prisma';
 import { sendMessages } from 'src/Messages/Twillio';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { dateFormatter } from 'src/utils/formatter';
 
 @Injectable()
 export class OrdersService {
@@ -47,10 +48,37 @@ export class OrdersService {
     });
   }
 
-  sendMessage() {
+  sendMessage(data: MessageDTO) {
+    const products = data.products.reduce((acc, product) => {
+      acc =
+        acc +
+        `
+        
+        ` +
+        product.description +
+        ' ' +
+        product.weight +
+        ' - ' +
+        product.quantity;
+
+      return acc;
+    }, '');
+
+    const message = `
+    Bolacha Maria - Pedidos
+
+    Olá ${data.client},
+
+    seu pedido de Nº ${data.id}, 
+
+    estará pronto no dia ${dateFormatter.format(new Date(data.dateDelivery))}. 
+    
+    Pedido: ${products}
+    `;
+
     sendMessages({
-      message: 'messagem teste 2',
-      dest: '968727791',
+      message,
+      dest: '966434548',
     });
     return 'Ok';
   }

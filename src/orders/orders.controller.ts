@@ -35,9 +35,9 @@ export class OrdersController {
     return this.ordersService.findOne(+id);
   }
 
-  @Get('/new/sendmessage')
-  sendMessage() {
-    return this.ordersService.sendMessage();
+  @Post('/new/sendmessage')
+  sendMessage(@Body() data: MessageDTO) {
+    return this.ordersService.sendMessage(data);
   }
 
   @Patch('/order/:id')

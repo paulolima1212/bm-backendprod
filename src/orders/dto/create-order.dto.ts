@@ -9,7 +9,7 @@ interface Products {
 export class CreateOrderDto {
   client: string;
   contact: string;
+  statusOrder: string;
   dateDelivery: string;
   totalOrder: number;
-  statusOrder: string;
 }

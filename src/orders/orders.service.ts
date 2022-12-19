@@ -65,20 +65,25 @@ export class OrdersService {
     }, '');
 
     const message = `
-    Bolacha Maria - Pedidos
+    ENCOMENDAS DE NATAL | BOLACHA MARIA
 
-    Olá ${data.client},
-
-    seu pedido de Nº ${data.id}, 
-
-    estará pronto no dia ${dateFormatter.format(new Date(data.dateDelivery))}. 
+    O seu pedido tem o Nº ${data.id} e estará pronto
+    no dia ${dateFormatter.format(new Date(data.dateDelivery))}.
     
     Pedido: ${products}
+
+    Deve fornecer este número para qualquer alteração 
+    e no momento do levantamento.
+
+    Dúvidas/alterações contacte 935355240 (chamada para a rede móvel nacional).
+
+    Obrigada e Boas Festas!
+
     `;
 
     sendMessages({
       message,
-      dest: '966434548',
+      dest: data.contact,
     });
     return 'Ok';
   }

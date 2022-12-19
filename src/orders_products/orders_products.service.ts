@@ -106,7 +106,7 @@ export class OrdersProductsService {
       INNER JOIN	orders_products op 
         ON o.id = op.ordersId 
       WHERE 
-        op.description LIKE '%${description}%' AND op.weight LIKE '%${weight}%' AND o.dateDelivery LIKE '%${dateDelivery}%'
+        op.description LIKE '%${description}%' AND op.weight LIKE '%${weight}%' AND o.dateDelivery LIKE '%${dateDelivery}%' AND o.statusOrder = 'pendente'
       ORDER BY
         o.dateDelivery
     `);
@@ -120,6 +120,8 @@ export class OrdersProductsService {
         orders_products op 
       INNER JOIN orders o 
         ON op.ordersId = o.id 
+      WHERE 
+        o.statusOrder = 'pendente'
       GROUP BY 
         op.description, op.weight,  LEFT(o.dateDelivery,10)
       ORDER BY 

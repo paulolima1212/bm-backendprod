@@ -8,7 +8,8 @@ import { UpdateOrdersProductDto } from './dto/update-orders_product.dto';
 export class OrdersProductsService {
   constructor(private prisma: PrismaService) {}
   async create(data: CreateOrdersProductDto) {
-    const { client, contact, dateDelivery, statusOrder, totalOrder } = data;
+    const { client, contact, dateDelivery, statusOrder, totalOrder, obs } =
+      data;
 
     const order = await this.prisma.orders.findUnique({
       where: {
@@ -24,6 +25,7 @@ export class OrdersProductsService {
           dateDelivery,
           totalOrder,
           statusOrder,
+          obs,
         },
       });
     }

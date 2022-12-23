@@ -4,6 +4,7 @@ export type Product = {
   price: string;
   description: string;
   quantity: number;
+  obs: string;
 };
 
 export class CreateOrdersProductDto {

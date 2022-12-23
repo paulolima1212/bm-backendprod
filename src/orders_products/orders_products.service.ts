@@ -36,6 +36,7 @@ export class OrdersProductsService {
           quantity: product.quantity,
           weight: product.weight,
           ordersId: data.id,
+          obs: product.obs,
         },
       });
     }
@@ -84,6 +85,7 @@ export class OrdersProductsService {
           quantity: product.quantity,
           weight: product.weight,
           ordersId: id,
+          obs: product.obs,
         },
       });
     }

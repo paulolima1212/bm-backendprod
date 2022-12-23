@@ -51,8 +51,15 @@ export class OrdersProductsService {
   }
 
   async update(id: number, data: UpdateOrdersProductDto) {
-    const { client, contact, dateDelivery, products, statusOrder, totalOrder } =
-      data;
+    const {
+      client,
+      contact,
+      dateDelivery,
+      products,
+      statusOrder,
+      totalOrder,
+      obs,
+    } = data;
 
     try {
       await this.prisma.orders_products.deleteMany({
@@ -74,6 +81,7 @@ export class OrdersProductsService {
         dateDelivery: dateDelivery,
         totalOrder: totalOrder,
         statusOrder: statusOrder,
+        obs: obs,
       },
     });
 

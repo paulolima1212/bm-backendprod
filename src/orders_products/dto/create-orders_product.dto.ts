@@ -15,4 +15,5 @@ export class CreateOrdersProductDto {
   totalOrder: number;
   statusOrder: string;
   products: Product[];
+  obs?: string;
 }

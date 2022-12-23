@@ -102,7 +102,7 @@ export class OrdersProductsService {
   }) {
     return await this.prisma.$queryRawUnsafe(`
       SELECT 
-        o.id , o.client , o.dateDelivery , op.quantity , op.weight 
+        o.id , o.client , o.dateDelivery , op.quantity , op.weight , op.obs 
       FROM 
         orders o 
       INNER JOIN	orders_products op 

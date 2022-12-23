@@ -12,4 +12,5 @@ export class CreateOrderDto {
   statusOrder: string;
   dateDelivery: string;
   totalOrder: number;
+  obs?: string;
 }

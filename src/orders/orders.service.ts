@@ -23,6 +23,7 @@ export class OrdersService {
         dateDelivery: true,
         totalOrder: true,
         statusOrder: true,
+        obs: true,
       },
       orderBy: {
         dateDelivery: 'asc',
@@ -44,6 +45,7 @@ export class OrdersService {
         dateDelivery: true,
         totalOrder: true,
         products: true,
+        obs: true,
       },
     });
   }

@@ -9,6 +9,7 @@ import { dateFormatter } from 'src/utils/formatter';
 export class OrdersService {
   constructor(private prisma: PrismaService) {}
   create(data: CreateOrderDto) {
+    console.log(data);
     return this.prisma.orders.create({
       data,
     });
